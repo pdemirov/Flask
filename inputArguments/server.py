@@ -60,20 +60,25 @@ data = [
     }
 ]
 
+# start flask app : flask --app server --debug run
+
 @app.route("/")
 def index():
     return "hello world"
 
+#no content http response
 @app.route("/no_content")
 def no_content():
     return {"message": "no content!!!"}, 204
 
+#success http response
 @app.route("/exp")
 def index_explicit():
     resp = make_response({"message": "hello world!!!"})
     resp.status_code = 200
     return resp
 
+#show the lenght of the data
 @app.route("/data")
 def get_data():
     try:
@@ -84,6 +89,7 @@ def get_data():
     except NameError:
         return {"message": "Data not found"}, 404
 
+#search by name (first_name) in the data
 @app.route("/name_search")
 def name_search():
     query = request.args.get("q")
@@ -107,6 +113,7 @@ def count():
         return {"message :" "data not defined"}, 500
 
 #get user data by passing uuid into the url
+# retrieve data from app for the particular app route : curl -X GET -i -w "\n" localhost:5000/{route url}    
 @app.route("/person/<uuid:id>")
 def find_by_uuid(id):
     for person in data:
@@ -115,7 +122,10 @@ def find_by_uuid(id):
 
     return {"message" : "person not found"}, 404
 
+
+
 #delete user by passing uuid into the url
+# delete user by executing this command in the terminal - curl -X DELETE -i localhost:5000/person/66c09925-589a-43b6-9a5d-d1601cf53287
 @app.route("/person/<uuid:id>", methods=['DELETE'])
 def delete_by_uuid(id):
     for person in data:
