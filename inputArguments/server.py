@@ -135,11 +135,38 @@ def delete_by_uuid(id):
     return {"message": "person not found"}, 404
 
 
+#Parse JSON from Request body
+#add user into the data with post request, the user data must be JSON
+@app.route("/person" ,methods=['POST'])
+def add_by_uuid():
+    new_person = request.get_json()
+    if not new_person:
+        return {"message" : "invalid input parameter"}, 422
+    
+    data.append(new_person)
+    return {"message" : f"{new_person['id']}"}, 200
 
 
 
+"""
+Command to add user by inserting JSON data into the data
 
+curl -X POST -i -w '\n' \
+  --url http://localhost:5000/person \
+  --header 'Content-Type: application/json' \
+  --data '{
+        "id": "4e1e61b4-8a27-11ed-a1eb-0242ac120002",
+        "first_name": "John",
+        "last_name": "Horne",
+        "graduation_year": 2001,
+        "address": "1 hill drive",
+        "city": "Atlanta",
+        "zip": "30339",
+        "country": "United States",
+        "avatar": "http://dummyimage.com/139x100.png/cc0000/ffffff"
+}'
 
+"""
 
 # start flask app : flask --app server --debug run
 # retrieve data from app for the particular app route : curl -X GET -i -w "\n" localhost:5000/{route url}     
