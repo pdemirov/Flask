@@ -23,3 +23,4 @@ def index_explicit():
     resp = make_response({"message": "response with make response ;)"})
     resp.status_code = 200
     return resp
+
