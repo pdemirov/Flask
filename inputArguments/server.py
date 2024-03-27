@@ -97,4 +97,39 @@ def name_search():
         
     return {"message": " Person not found"}, 404
 
-        
+
+#get the count of the data
+@app.route("/count")
+def count():
+    try:
+        return {"data count": len(data)}
+    except NameError:
+        return {"message :" "data not defined"}, 500
+
+#get user data by passing uuid into the url
+@app.route("/person/<uuid:id>")
+def find_by_uuid(id):
+    for person in data:
+        if person["id"] == str(id):
+            return person
+
+    return {"message" : "person not found"}, 404
+
+#delete user by passing uuid into the url
+@app.route("/person/<uuid:id>", methods=['DELETE'])
+def delete_by_uuid(id):
+    for person in data:
+        if person["id"] == str(id):
+            data.remove(person)
+            return {"message": f"id of person {id} has been deleted"}, 200
+    return {"message": "person not found"}, 404
+
+
+
+
+
+
+
+
+# start flask app : flask --app server --debug run
+# retrieve data from app for the particular app route : curl -X GET -i -w "\n" localhost:5000/{route url}     
