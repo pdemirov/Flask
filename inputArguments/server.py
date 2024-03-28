@@ -147,6 +147,12 @@ def add_by_uuid():
     return {"message" : f"{new_person['id']}"}, 200
 
 
+#add error handler - for cases where the request does not call any of the provided api's, can be tested with: curl -X POST -i -w '\n' http://localhost:5000/notvalidapi
+@app.errorhandler(404)
+def api_not_found(error):
+    return {"message": "API not found"}, 404
+
+
 
 """
 Command to add user by inserting JSON data into the data
