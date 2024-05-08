@@ -137,25 +137,8 @@ def delete_by_uuid(id):
 
 #Parse JSON from Request body
 #add user into the data with post request, the user data must be JSON
-@app.route("/person" ,methods=['POST'])
-def add_by_uuid():
-    new_person = request.get_json()
-    if not new_person:
-        return {"message" : "invalid input parameter"}, 422
-    
-    data.append(new_person)
-    return {"message" : f"{new_person['id']}"}, 200
-
-
-#add error handler - for cases where the request does not call any of the provided api's, can be tested with: curl -X POST -i -w '\n' http://localhost:5000/notvalidapi
-@app.errorhandler(404)
-def api_not_found(error):
-    return {"message": "API not found"}, 404
-
-
-
 """
-Command to add user by inserting JSON data into the data
+Command to add user by inserting JSON data into the data, EXAMPLE below
 
 curl -X POST -i -w '\n' \
   --url http://localhost:5000/person \
@@ -171,8 +154,23 @@ curl -X POST -i -w '\n' \
         "country": "United States",
         "avatar": "http://dummyimage.com/139x100.png/cc0000/ffffff"
 }'
-
 """
+
+@app.route("/person" ,methods=['POST'])
+def add_by_uuid():
+    new_person = request.get_json()
+    if not new_person:
+        return {"message" : "invalid input parameter"}, 422
+    
+    data.append(new_person)
+    return {"message" : f"{new_person['id']}"}, 200
+
+
+#add error handler - for cases where the request does not call any of the provided api's, can be tested with: curl -X POST -i -w '\n' http://localhost:5000/notvalidapi
+@app.errorhandler(404)
+def api_not_found(error):
+    return {"message": "API not found"}, 404
+
 
 # start flask app : flask --app server --debug run
 # retrieve data from app for the particular app route : curl -X GET -i -w "\n" localhost:5000/{route url}     
